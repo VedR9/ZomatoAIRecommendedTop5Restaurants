@@ -44,7 +44,7 @@ if st.sidebar.button("Find Restaurants"):
         st.warning("Please provide a Groq API Key to use the AI engine. (Otherwise, the deterministic fallback will be used).")
         
     with st.spinner("Curating the best options using AI..."):
-        cuisine_list = [c.strip() for c in cuisines_input.split(',')] if cuisines_input else []
+        cuisine_list = [c.strip() for c in cuisines_input.split(',') if c.strip()]
         prefs = RetrievalPreferences(
             location=location,
             budget_band=budget,
