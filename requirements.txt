@@ -1,2 +1,4 @@
 -e ./backend
 streamlit
+openai
+python-dotenv
