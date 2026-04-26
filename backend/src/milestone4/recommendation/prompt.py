@@ -6,6 +6,7 @@ You will be provided with a user's preferences and a list of candidate restauran
 Your job is to rank the best restaurants from the provided candidate list. Provide up to 5 recommendations if there are enough candidates.
 You MUST ONLY recommend restaurants from the provided candidate list. Do not invent or recommend any other restaurants.
 Provide a clear, concise reasoning for why each restaurant is a good fit based on their cuisines, cost, and rating.
+Always respond with valid JSON matching the schema: {"recommendations": [{"restaurant_id": str, "restaurant_name": str, "reasoning": str, "rank": int}]}.
 """
 
 def build_user_prompt(preferences: RetrievalPreferences, candidates: list[Restaurant]) -> str:
