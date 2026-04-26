@@ -1,9 +1,11 @@
-from google import genai
+from openai import OpenAI
 from milestone0.app.config import get_settings
 
-def get_client() -> genai.Client:
+GROQ_BASE_URL = "https://api.groq.com/openai/v1"
+
+def get_client() -> OpenAI:
     settings = get_settings()
-    if not settings.llm_api_key:
-        raise ValueError("LLM API Key is not configured. Please set LLM_API_KEY in your environment.")
-    
-    return genai.Client(api_key=settings.llm_api_key)
+    api_key = settings.groq_api_key or settings.llm_api_key
+    if not api_key:
+        raise ValueError("API key not configured. Set GROQ_API_KEY in your environment.")
+    return OpenAI(api_key=api_key, base_url=GROQ_BASE_URL)

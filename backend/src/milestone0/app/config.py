@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     app_port: int = 8000
     log_level: str = "INFO"
     llm_api_key: str | None = None
+    groq_api_key: str | None = None
 
 
 @lru_cache(maxsize=1)
