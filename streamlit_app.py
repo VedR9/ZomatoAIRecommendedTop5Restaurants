@@ -67,9 +67,12 @@ if st.sidebar.button("Find Restaurants"):
         if not candidates:
             st.warning("No matches found. Try adjusting your filters.")
         else:
-            # We call our Phase 4 Engine directly!
-            result = generate_recommendations(prefs, candidates)
-            
+            try:
+                result = generate_recommendations(prefs, candidates)
+            except Exception as e:
+                st.error(f"AI engine error: {e}")
+                st.stop()
+
             if result and result.recommendations:
                 st.success(f"🎯 AI recommends {len(result.recommendations)} restaurants from {len(candidates)} matches:")
                 for rec in result.recommendations:

@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 def generate_recommendations(
     preferences: RetrievalPreferences, 
     candidates: list[Restaurant],
-    model_name: str = "gemini-2.5-flash"
+    model_name: str = "gemini-2.5-flash-lite"
 ) -> RecommendationResult:
     if not candidates:
         logger.info("No candidates provided to generate_recommendations.")
@@ -45,14 +45,4 @@ def generate_recommendations(
     except Exception as e:
         latency = (time.time() - start_time) * 1000
         logger.warning(f"LLM generation failed after {latency:.2f}ms: {e}")
-        # Deterministic fallback based on rating
-        top_candidates = sorted(candidates, key=lambda c: c.rating or 0.0, reverse=True)[:3]
-        recs = [
-            Recommendation(
-                restaurant_id=c.id,
-                restaurant_name=c.name,
-                reasoning="Fallback recommendation based on highest rating.",
-                rank=i+1
-            ) for i, c in enumerate(top_candidates)
-        ]
-        return RecommendationResult(recommendations=recs)
+        raise RuntimeError(f"LLM call failed: {e}") from e
