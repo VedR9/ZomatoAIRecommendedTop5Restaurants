@@ -14,6 +14,7 @@ class RecommendRequest(BaseModel):
     budget_band: str
     cuisines: list[str]
     minimum_rating: float
+    use_fallback: bool = False
 
 @router.post("/api/recommend", response_model=RecommendationResult)
 def get_recommendations(request: Request, payload: RecommendRequest):
@@ -35,7 +36,23 @@ def get_recommendations(request: Request, payload: RecommendRequest):
     dataset = request.app.state.dataset_cache if hasattr(request.app.state, "dataset_cache") else []
     
     candidates = retrieve_candidates(dataset, prefs, candidate_cap=25)
-    result = generate_recommendations(prefs, candidates)
+    
+    if payload.use_fallback:
+        # Use deterministic fallback without LLM
+        from milestone1.ingestion.models import Restaurant
+        from milestone4.recommendation.models import Recommendation
+        top_candidates = sorted(candidates, key=lambda c: c.rating or 0.0, reverse=True)[:3]
+        recs = [
+            Recommendation(
+                restaurant_id=c.id,
+                restaurant_name=c.name,
+                reasoning=f"Fallback recommendation based on rating {c.rating} and location match.",
+                rank=i+1
+            ) for i, c in enumerate(top_candidates)
+        ]
+        result = RecommendationResult(recommendations=recs)
+    else:
+        result = generate_recommendations(prefs, candidates)
     
     # Store in cache
     set_cached_recommendation(payload_json, result)

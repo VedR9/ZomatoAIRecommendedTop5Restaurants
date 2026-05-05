@@ -28,7 +28,7 @@ app = FastAPI(title=settings.app_name, lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"],
+    allow_origins=["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173", "http://127.0.0.1:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -48,6 +48,6 @@ def phase0_info() -> dict[str, str | bool]:
     return {
         "app_name": settings.app_name,
         "environment": settings.app_env,
-        "api_key_configured": bool(settings.llm_api_key),
+        "api_key_configured": bool(settings.gemini_api_key or settings.llm_api_key),
         "message": "Phase 0 scaffold is ready.",
     }

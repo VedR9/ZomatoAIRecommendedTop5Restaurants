@@ -1,10 +1,13 @@
 from __future__ import annotations
 
+import logging
 from collections.abc import Iterable
 
 from milestone1.ingestion.models import Restaurant
 from milestone2.preferences.models import UserPreferences
 from milestone3.retrieval.models import RetrievalPreferences
+
+logger = logging.getLogger(__name__)
 
 
 def budget_band_for_cost(cost_for_two: float | None) -> str | None:
@@ -79,8 +82,11 @@ def retrieve_candidates(
 
     coerced_preferences = _coerce_preferences(preferences)
 
+    all_restaurants = list(restaurants)
+    pre_filter_count = len(all_restaurants)
+
     filtered: list[Restaurant] = []
-    for restaurant in restaurants:
+    for restaurant in all_restaurants:
         if not _location_matches(restaurant, coerced_preferences.location):
             continue
         if not _rating_matches(restaurant, coerced_preferences.minimum_rating):
@@ -91,5 +97,15 @@ def retrieve_candidates(
             continue
         filtered.append(restaurant)
 
+    post_filter_count = len(filtered)
     filtered.sort(key=lambda item: _sort_key(item, coerced_preferences))
-    return filtered[:candidate_cap]
+    capped = filtered[:candidate_cap]
+
+    logger.info(
+        "Retrieval: %d input -> %d after filters -> %d after cap (cap=%d)",
+        pre_filter_count,
+        post_filter_count,
+        len(capped),
+        candidate_cap,
+    )
+    return capped
