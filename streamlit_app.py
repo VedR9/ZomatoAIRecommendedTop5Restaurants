@@ -62,7 +62,7 @@ if st.sidebar.button("Find Restaurants"):
         st.sidebar.write(f"⭐ Min Rating: {rating}")
         
         candidates = retrieve_candidates(dataset, prefs, candidate_cap=25)
-        cost_lookup = {c.id: c.cost_for_two for c in candidates}
+        restaurant_lookup = {c.id: c for c in candidates}
 
         st.info(f"Found {len(candidates)} restaurants matching your criteria. Now using AI to recommend the best ones...")
 
@@ -80,9 +80,16 @@ if st.sidebar.button("Find Restaurants"):
                 for rec in result.recommendations:
                     st.markdown(f"### #{rec.rank} {rec.restaurant_name}")
                     st.write(rec.reasoning)
-                    cost = cost_lookup.get(rec.restaurant_id)
-                    if cost:
-                        st.write(f"💰 Approximate price for two: ₹{int(cost)}")
+                    r = restaurant_lookup.get(rec.restaurant_id)
+                    if r:
+                        if r.rating:
+                            st.write(f"⭐ Rating: {r.rating}")
+                        if r.cuisines:
+                            st.write(f"🍴 Cuisines: {', '.join(r.cuisines)}")
+                        if r.location:
+                            st.write(f"📍 Location: {r.location}")
+                        if r.cost_for_two:
+                            st.write(f"💰 Approximate price for two: ₹{int(r.cost_for_two)}")
                     st.markdown("---")
             else:
                 st.error("AI couldn't generate recommendations. Please try again.")
