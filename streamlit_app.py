@@ -24,11 +24,11 @@ with st.spinner("Loading Zomato dataset (this happens once)..."):
     dataset = load_dataset()
 
 # Provide an option to input the API key securely if not in environment or Streamlit Secrets
-api_key = os.environ.get("LLM_API_KEY")
+api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("LLM_API_KEY")
 if not api_key:
     api_key = st.text_input("Enter your Gemini API Key:", type="password")
     if api_key:
-        os.environ["LLM_API_KEY"] = api_key
+        os.environ["GEMINI_API_KEY"] = api_key
 
 st.sidebar.header("Your Preferences")
 location = st.sidebar.text_input("Location", value="Indiranagar")
@@ -37,7 +37,7 @@ cuisines_input = st.sidebar.text_input("Cuisines (comma separated)", value="")
 rating = st.sidebar.slider("Minimum Rating", 0.0, 5.0, 4.2, 0.1)
 
 if st.sidebar.button("Find Restaurants"):
-    if not os.environ.get("LLM_API_KEY"):
+    if not (os.environ.get("GEMINI_API_KEY") or os.environ.get("LLM_API_KEY")):
         st.warning("Please provide a Gemini API Key to use the AI engine. (Otherwise, the deterministic fallback will be used).")
         
     with st.spinner("Curating the best options using AI..."):
