@@ -70,6 +70,46 @@ def get_sample_data():
             cuisines=["North Indian", "Bar"],
             cost_for_two=1400.0,
             rating=4.4
+        ),
+        Restaurant(
+            id="sample6",
+            name="Smoor",
+            location="Indiranagar",
+            cuisines=["Continental", "Desserts"],
+            cost_for_two=1200.0,
+            rating=4.6
+        ),
+        Restaurant(
+            id="sample7",
+            name="Bangalore Mandarin",
+            location="Bellandur",
+            cuisines=["Chinese", "Asian"],
+            cost_for_two=900.0,
+            rating=4.2
+        ),
+        Restaurant(
+            id="sample8",
+            name="Glassy",
+            location="Bellandur",
+            cuisines=["North Indian", "Bar"],
+            cost_for_two=1400.0,
+            rating=4.2
+        ),
+        Restaurant(
+            id="sample9",
+            name="Chili's American Grill",
+            location="Indiranagar",
+            cuisines=["American", "Mexican"],
+            cost_for_two=1500.0,
+            rating=4.4
+        ),
+        Restaurant(
+            id="sample10",
+            name="MoMo Cafe",
+            location="Bellandur",
+            cuisines=["Asian", "Momos"],
+            cost_for_two=800.0,
+            rating=4.2
         )
     ]
     return sample_restaurants
@@ -104,7 +144,17 @@ if st.sidebar.button("Find Restaurants"):
             minimum_rating=rating
         )
         
+        # Show user preferences
+        st.sidebar.markdown("---")
+        st.sidebar.markdown("**Your Preferences:**")
+        st.sidebar.write(f"📍 Location: {location}")
+        st.sidebar.write(f"💰 Budget: {budget}")
+        st.sidebar.write(f"🍽️ Cuisines: {cuisine_list if cuisine_list else 'Any'}")
+        st.sidebar.write(f"⭐ Min Rating: {rating}")
+        
         candidates = retrieve_candidates(dataset, prefs, candidate_cap=25)
+        
+        st.info(f"Found {len(candidates)} restaurants matching your criteria. Now using AI to recommend the best ones...")
         
         if not candidates:
             st.warning("No matches found. Try adjusting your filters.")
@@ -113,9 +163,10 @@ if st.sidebar.button("Find Restaurants"):
             result = generate_recommendations(prefs, candidates)
             
             if result and result.recommendations:
+                st.success(f"🎯 AI recommends {len(result.recommendations)} restaurants from {len(candidates)} matches:")
                 for rec in result.recommendations:
                     st.markdown(f"### #{rec.rank} {rec.restaurant_name}")
                     st.write(rec.reasoning)
                     st.markdown("---")
             else:
-                st.error("Failed to generate recommendations.")
+                st.error("AI couldn't generate recommendations. Please try again.")
