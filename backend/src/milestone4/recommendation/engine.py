@@ -61,8 +61,8 @@ def generate_recommendations(
         except (genai_errors.ServerError, genai_errors.ClientError) as e:
             latency = (time.time() - start_time) * 1000
             # 503 = overloaded, 429 = quota exhausted — both are retryable with next model
-            if e.status_code in (503, 429):
-                logger.warning(f"Model '{model}' unavailable ({e.status_code}), trying next...")
+            if e.code in (503, 429):
+                logger.warning(f"Model '{model}' unavailable ({e.code}), trying next...")
                 last_error = e
                 continue
             raise RuntimeError(f"LLM call failed: {e}") from e
