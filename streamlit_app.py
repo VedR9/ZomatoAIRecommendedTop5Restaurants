@@ -23,19 +23,20 @@ def load_dataset():
 
 st.sidebar.header("Your Preferences")
 
-# Load dataset and get locations for dropdown
+# Load dataset and get locations/cuisines for dropdowns
 @st.cache_resource(show_spinner=False)
-def load_dataset_with_locations():
+def load_dataset_with_options():
     dataset = load_dataset()
-    locations = sorted(list(set([r.location for r in dataset])))
-    return dataset, locations
+    locations = sorted(set(r.location for r in dataset))
+    cuisines = sorted(set(c for r in dataset for c in (r.cuisines or [])))
+    return dataset, locations, cuisines
 
-# Load dataset and locations
-dataset, locations = load_dataset_with_locations()
+# Load dataset and options
+dataset, locations, all_cuisines = load_dataset_with_options()
 
 location = st.sidebar.selectbox("Location", options=locations, index=0)
 budget = st.sidebar.selectbox("Budget Band", ["low", "medium", "high"], index=1)
-cuisines_input = st.sidebar.text_input("Cuisines (comma separated)", value="")
+cuisines_input = st.sidebar.multiselect("Cuisines (optional)", options=all_cuisines, placeholder="Any cuisine")
 rating = st.sidebar.slider("Minimum Rating", 0.0, 5.0, 4.2, 0.1)
 
 if st.sidebar.button("Find Restaurants"):
@@ -44,7 +45,7 @@ if st.sidebar.button("Find Restaurants"):
         st.warning("Please provide a Gemini API Key to use the AI engine. (Otherwise, deterministic fallback will be used).")
         
     with st.spinner("Curating the best options using AI..."):
-        cuisine_list = [c.strip() for c in cuisines_input.split(',')] if cuisines_input else []
+        cuisine_list = cuisines_input  # already a list from multiselect
         prefs = RetrievalPreferences(
             location=location,
             budget_band=budget,
@@ -61,9 +62,10 @@ if st.sidebar.button("Find Restaurants"):
         st.sidebar.write(f"⭐ Min Rating: {rating}")
         
         candidates = retrieve_candidates(dataset, prefs, candidate_cap=25)
-        
+        cost_lookup = {c.id: c.cost_for_two for c in candidates}
+
         st.info(f"Found {len(candidates)} restaurants matching your criteria. Now using AI to recommend the best ones...")
-        
+
         if not candidates:
             st.warning("No matches found. Try adjusting your filters.")
         else:
@@ -78,6 +80,9 @@ if st.sidebar.button("Find Restaurants"):
                 for rec in result.recommendations:
                     st.markdown(f"### #{rec.rank} {rec.restaurant_name}")
                     st.write(rec.reasoning)
+                    cost = cost_lookup.get(rec.restaurant_id)
+                    if cost:
+                        st.write(f"💰 Approximate price for two: ₹{int(cost)}")
                     st.markdown("---")
             else:
                 st.error("AI couldn't generate recommendations. Please try again.")
