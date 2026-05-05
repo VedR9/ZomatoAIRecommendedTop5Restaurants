@@ -18,10 +18,65 @@ st.write("Discover your next favorite meal, powered by Gemini. (Streamlit Versio
 @st.cache_resource(show_spinner=False)
 def load_dataset():
     # Cache the dataset in memory so it doesn't reload on every UI interaction
-    return load_restaurants_from_huggingface()
+    try:
+        return load_restaurants_from_huggingface()
+    except Exception as e:
+        st.error(f"Failed to load dataset from Hugging Face: {str(e)}")
+        st.info("Using sample data for demonstration. Please check your internet connection.")
+        # Return sample data as fallback
+        return get_sample_data()
+
+def get_sample_data():
+    """Return sample restaurant data for demo purposes"""
+    from milestone1.ingestion.models import Restaurant
+    
+    sample_restaurants = [
+        Restaurant(
+            id="sample1",
+            name="The Pizza Bakery",
+            location="Indiranagar",
+            cuisines=["Italian", "Pizza"],
+            cost_for_two=800.0,
+            rating=4.5
+        ),
+        Restaurant(
+            id="sample2", 
+            name="Bologna",
+            location="Indiranagar",
+            cuisines=["Italian", "Continental"],
+            cost_for_two=1000.0,
+            rating=4.3
+        ),
+        Restaurant(
+            id="sample3",
+            name="Pot-O-Noodles",
+            location="Indiranagar", 
+            cuisines=["Chinese", "Asian"],
+            cost_for_two=600.0,
+            rating=4.2
+        ),
+        Restaurant(
+            id="sample4",
+            name="Onesta",
+            location="Bellandur",
+            cuisines=["Italian", "Cafe"],
+            cost_for_two=700.0,
+            rating=4.1
+        ),
+        Restaurant(
+            id="sample5",
+            name="Tipsy Bull",
+            location="Bellandur",
+            cuisines=["North Indian", "Bar"],
+            cost_for_two=1400.0,
+            rating=4.4
+        )
+    ]
+    return sample_restaurants
 
 with st.spinner("Loading Zomato dataset (this happens once)..."):
     dataset = load_dataset()
+    st.success(f"Loaded {len(dataset)} restaurants!")
 
 # Provide an option to input the API key securely if not in environment or Streamlit Secrets
 api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("LLM_API_KEY")
