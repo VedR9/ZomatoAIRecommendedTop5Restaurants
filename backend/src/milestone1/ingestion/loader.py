@@ -80,11 +80,12 @@ def load_restaurants_from_huggingface(
     limit: int | None = None,
     revision: str | None = None,
 ) -> list[Restaurant]:
+    import itertools
     from datasets import load_dataset
 
-    dataset = load_dataset(HF_DATASET, split=split, revision=revision)
-    if limit is not None:
-        dataset = dataset.select(range(min(limit, len(dataset))))
+    # streaming=True fetches rows lazily — never loads the full dataset into memory.
+    # This keeps RAM usage proportional to `limit` instead of the full 12k rows.
+    dataset = load_dataset(HF_DATASET, split=split, revision=revision, streaming=True)
+    rows = itertools.islice(dataset, limit) if limit is not None else dataset
 
-    # Dataset rows are returned as dict-like objects that match Mapping[str, Any].
-    return list(iter_restaurants(dataset))
+    return list(iter_restaurants(rows))
