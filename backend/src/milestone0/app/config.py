@@ -13,6 +13,7 @@ class Settings(BaseSettings):
     llm_api_key: str | None = None
     gemini_api_key: str | None = None
     cors_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
+    dataset_limit: int | None = None  # set to e.g. 3000 on free-tier hosts
 
 
 @lru_cache(maxsize=1)

@@ -16,8 +16,8 @@ logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    logger.info("Loading restaurant dataset into memory...")
-    app.state.dataset_cache = load_restaurants_from_huggingface()
+    logger.info(f"Loading restaurant dataset (limit={settings.dataset_limit})...")
+    app.state.dataset_cache = load_restaurants_from_huggingface(limit=settings.dataset_limit)
     logger.info(f"Loaded {len(app.state.dataset_cache)} restaurants.")
     yield
     if hasattr(app.state, "dataset_cache"):
