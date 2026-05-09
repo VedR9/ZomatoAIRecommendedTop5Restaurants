@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Be+Vietnam+Pro:wght@500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline": "#8f6f6e",
+                    "secondary-fixed": "#e4e2e1",
+                    "secondary-fixed-dim": "#c8c6c6",
+                    "on-secondary-fixed-variant": "#474747",
+                    "secondary-container": "#e4e2e1",
+                    "on-background": "#1b1c1c",
+                    "surface-container-low": "#f5f3f3",
+                    "inverse-primary": "#ffb3b1",
+                    "background": "#fbf9f8",
+                    "surface-container-high": "#e9e8e7",
+                    "on-surface": "#1b1c1c",
+                    "on-secondary-fixed": "#1b1c1c",
+                    "surface-variant": "#e4e2e2",
+                    "surface-container": "#efeded",
+                    "primary": "#b7122a",
+                    "outline-variant": "#e4bebc",
+                    "on-error-container": "#93000a",
+                    "primary-container": "#db313f",
+                    "surface-bright": "#fbf9f8",
+                    "error-container": "#ffdad6",
+                    "secondary": "#5f5e5e",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed-variant": "#92001c",
+                    "primary-fixed-dim": "#ffb3b1",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "surface-dim": "#dbdad9",
+                    "tertiary-fixed": "#e2e2e2",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-container": "#656464",
+                    "surface-container-highest": "#e4e2e2",
+                    "on-secondary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "surface-tint": "#bb162c",
+                    "on-tertiary": "#ffffff",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "inverse-on-surface": "#f2f0f0",
+                    "primary-fixed": "#ffdad8",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed": "#410007",
+                    "tertiary-container": "#737575",
+                    "surface": "#fbf9f8",
+                    "on-surface-variant": "#5b403f",
+                    "on-primary-container": "#fffbff",
+                    "tertiary": "#5b5c5c",
+                    "inverse-surface": "#303031",
+                    "on-tertiary-container": "#fcfcfc"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "8px",
+                    "sm": "16px",
+                    "base": "4px",
+                    "margin-desktop": "40px",
+                    "margin-mobile": "16px",
+                    "xl": "48px",
+                    "md": "24px",
+                    "lg": "32px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "body-md": ["Plus Jakarta Sans"],
+                    "headline-sm": ["Plus Jakarta Sans"],
+                    "label-bold": ["Be Vietnam Pro"],
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "body-lg": ["Plus Jakarta Sans"],
+                    "label-sm": ["Be Vietnam Pro"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                    "label-bold": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hero-gradient {
+            background: radial-gradient(circle at top right, #fff5f5 0%, #ffffff 100%);
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-background selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 border-b border-zinc-100 dark:border-zinc-800 bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md shadow-sm dark:shadow-none font-['Plus_Jakarta_Sans'] antialiased">
+<div class="flex justify-between items-center h-16 px-6 md:px-12 max-w-7xl mx-auto">
+<a class="text-2xl font-black tracking-tight text-red-600 dark:text-red-500 active:scale-95 transition-transform" href="#">GourmetGo</a>
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-zinc-600 dark:text-zinc-400 font-medium hover:text-red-600 dark:hover:text-red-400 transition-colors duration-200" href="#">Add Restaurant</a>
+<a class="text-zinc-600 dark:text-zinc-400 font-medium hover:text-red-600 dark:hover:text-red-400 transition-colors duration-200" href="#">Log in</a>
+<a class="text-zinc-600 dark:text-zinc-400 font-medium hover:text-red-600 dark:hover:text-red-400 transition-colors duration-200" href="#">Sign up</a>
+<button class="relative p-2 text-zinc-600 hover:text-red-600 transition-colors">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+</button>
+</div>
+<button class="md:hidden p-2 text-zinc-600">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</div>
+</nav>
+<main class="pt-16">
+<!-- Hero Section -->
+<section class="relative min-h-[70vh] flex flex-col items-center justify-center px-6 hero-gradient overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-full pointer-events-none opacity-40">
+<div class="absolute top-[-10%] right-[-5%] w-[400px] h-[400px] bg-primary-fixed rounded-full blur-[120px]"></div>
+<div class="absolute bottom-[-10%] left-[-5%] w-[300px] h-[300px] bg-secondary-fixed rounded-full blur-[100px]"></div>
+</div>
+<div class="relative z-10 text-center max-w-4xl mx-auto">
+<h1 class="font-display-lg text-display-lg text-primary mb-8 tracking-tighter">GourmetGo</h1>
+<p class="font-headline-md text-headline-md text-secondary mb-12 max-w-2xl mx-auto">Discover the best food &amp; drinks in your city.</p>
+<div class="glass-panel p-2 rounded-xl shadow-lg border border-white flex flex-col md:flex-row items-center gap-2 max-w-3xl mx-auto">
+<div class="flex items-center w-full md:w-1/3 px-4 py-3 border-b md:border-b-0 md:border-r border-zinc-200">
+<span class="material-symbols-outlined text-primary mr-2" data-icon="location_on">location_on</span>
+<input class="bg-transparent border-none focus:ring-0 w-full font-label-bold text-on-surface" placeholder="New York, NY" type="text"/>
+</div>
+<div class="flex items-center w-full md:flex-1 px-4 py-3">
+<span class="material-symbols-outlined text-zinc-400 mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 w-full font-label-bold text-on-surface" placeholder="Search for restaurant, cuisine or a dish" type="text"/>
+</div>
+</div>
+<div class="mt-10">
+<button class="bg-primary hover:bg-primary-container text-on-primary px-8 py-4 rounded-xl font-label-bold shadow-lg shadow-primary/20 transition-all active:scale-95">
+                        Get Recommendations
+                    </button>
+</div>
+</div>
+</section>
+<!-- Popular Localities -->
+<section class="py-xl max-w-7xl mx-auto px-6">
+<h2 class="font-headline-md text-headline-md text-on-background mb-lg">Popular Localities</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Locality Card 1 -->
+<div class="group bg-white p-sm rounded-xl border border-zinc-100 hover:shadow-md transition-shadow cursor-pointer flex items-center justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">Lower Manhattan</h3>
+<p class="text-zinc-500 font-label-sm">452 places</p>
+</div>
+<span class="material-symbols-outlined text-zinc-400 group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+<!-- Locality Card 2 -->
+<div class="group bg-white p-sm rounded-xl border border-zinc-100 hover:shadow-md transition-shadow cursor-pointer flex items-center justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">Brooklyn Heights</h3>
+<p class="text-zinc-500 font-label-sm">318 places</p>
+</div>
+<span class="material-symbols-outlined text-zinc-400 group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+<!-- Locality Card 3 -->
+<div class="group bg-white p-sm rounded-xl border border-zinc-100 hover:shadow-md transition-shadow cursor-pointer flex items-center justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">Upper East Side</h3>
+<p class="text-zinc-500 font-label-sm">294 places</p>
+</div>
+<span class="material-symbols-outlined text-zinc-400 group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+<!-- Locality Card 4 -->
+<div class="group bg-white p-sm rounded-xl border border-zinc-100 hover:shadow-md transition-shadow cursor-pointer flex items-center justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">Williamsburg</h3>
+<p class="text-zinc-500 font-label-sm">512 places</p>
+</div>
+<span class="material-symbols-outlined text-zinc-400 group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+<!-- Locality Card 5 -->
+<div class="group bg-white p-sm rounded-xl border border-zinc-100 hover:shadow-md transition-shadow cursor-pointer flex items-center justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">Chelsea</h3>
+<p class="text-zinc-500 font-label-sm">382 places</p>
+</div>
+<span class="material-symbols-outlined text-zinc-400 group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+<!-- Locality Card 6 -->
+<div class="group bg-white p-sm rounded-xl border border-zinc-100 hover:shadow-md transition-shadow cursor-pointer flex items-center justify-between">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface group-hover:text-primary transition-colors">Astoria</h3>
+<p class="text-zinc-500 font-label-sm">215 places</p>
+</div>
+<span class="material-symbols-outlined text-zinc-400 group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</section>
+<!-- Explore Options -->
+<section class="py-xl bg-surface-container-low">
+<div class="max-w-7xl mx-auto px-6">
+<h2 class="font-headline-md text-headline-md text-on-background mb-lg">Explore options near me</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-sm">
+<button class="bg-white hover:bg-primary hover:text-white transition-all duration-300 p-lg rounded-2xl shadow-sm border border-zinc-100 flex flex-col items-center gap-3">
+<span class="material-symbols-outlined text-4xl" data-icon="cooking">cooking</span>
+<span class="font-label-bold">Top Rated</span>
+</button>
+<button class="bg-white hover:bg-primary hover:text-white transition-all duration-300 p-lg rounded-2xl shadow-sm border border-zinc-100 flex flex-col items-center gap-3">
+<span class="material-symbols-outlined text-4xl" data-icon="soup_kitchen">soup_kitchen</span>
+<span class="font-label-bold">Asian</span>
+</button>
+<button class="bg-white hover:bg-primary hover:text-white transition-all duration-300 p-lg rounded-2xl shadow-sm border border-zinc-100 flex flex-col items-center gap-3">
+<span class="material-symbols-outlined text-4xl" data-icon="local_pizza">local_pizza</span>
+<span class="font-label-bold">Italian</span>
+</button>
+<button class="bg-white hover:bg-primary hover:text-white transition-all duration-300 p-lg rounded-2xl shadow-sm border border-zinc-100 flex flex-col items-center gap-3">
+<span class="material-symbols-outlined text-4xl" data-icon="coffee">coffee</span>
+<span class="font-label-bold">Cafes</span>
+</button>
+<button class="bg-white hover:bg-primary hover:text-white transition-all duration-300 p-lg rounded-2xl shadow-sm border border-zinc-100 flex flex-col items-center gap-3">
+<span class="material-symbols-outlined text-4xl" data-icon="dinner_dining">dinner_dining</span>
+<span class="font-label-bold">Fine Dining</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Personalized for You -->
+<section class="py-xl max-w-7xl mx-auto px-6">
+<div class="flex items-center gap-3 mb-lg">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="auto_awesome">auto_awesome</span>
+<h2 class="font-headline-md text-headline-md text-on-background">Personalized for You</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter h-full">
+<!-- Bento Card 1 -->
+<div class="md:col-span-2 relative overflow-hidden rounded-2xl bg-zinc-900 aspect-[16/9] md:aspect-auto group">
+<img class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" data-alt="A clean, minimalist high-fidelity visualization of a modern architectural space with sharp geometric lines and soft, ambient studio lighting. The color palette consists of pristine whites, subtle greys, and bold accents of deep red. The mood is sophisticated, reflecting a premium AI-driven digital experience." src="https://lh3.googleusercontent.com/aida/ADBb0ugV546ky801LjaMgCb2RS8BBfP5RnJfTDwX76Mg6CcAOWb4BZX6Xt7bzwv5lVBB62sAm6ZkvnAcnZN3QJd054Q0o9ttOXOXF8fG6XNqM02n0XAov8iASX_Z3ot_Ayh5O54ZMJFg7R7-L05YhmwUmvAVzLvJhoIgoLd4CHJTxxmXm4DwqxbiYWEbjd43Tl36QdNtop_sWCFWg9qu7KD0pDxgWJqSSh_9ZDINTYw_lX6mLPJryWITc3vuSE0h"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent p-lg flex flex-col justify-end">
+<p class="text-primary-fixed-dim font-label-bold mb-2">AI CURATED</p>
+<h3 class="text-white font-display-lg text-3xl mb-4">Discover Your New Favorite</h3>
+<p class="text-zinc-300 max-w-md">Our algorithm analyzes your preferences to suggest unique dining spots that match your palate perfectly.</p>
+</div>
+</div>
+<div class="flex flex-col gap-gutter">
+<!-- Bento Card 2 -->
+<div class="bg-primary-container p-lg rounded-2xl text-on-primary-container flex-1">
+<span class="material-symbols-outlined text-4xl mb-4" data-icon="verified">verified</span>
+<h3 class="font-headline-sm mb-2">Verified Reviews</h3>
+<p class="text-on-primary-container/80 text-sm">Real feedback from real diners to ensure you always have the best experience.</p>
+</div>
+<!-- Bento Card 3 -->
+<div class="bg-secondary-container p-lg rounded-2xl text-on-secondary-container flex-1">
+<span class="material-symbols-outlined text-4xl mb-4" data-icon="trending_up">trending_up</span>
+<h3 class="font-headline-sm mb-2">Trending Now</h3>
+<p class="text-on-secondary-container/80 text-sm">Join the crowd at the city's most buzzed-about restaurants this week.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Weekend Specials Banner -->
+<section class="max-w-7xl mx-auto px-6 mb-xl">
+<div class="relative rounded-3xl overflow-hidden h-[300px] flex items-center group">
+<img class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000" data-alt="A sophisticated abstract background featuring flowing liquid shapes and high-contrast gradients in shades of white, silver, and deep crimson. The lighting is crisp and modern, creating a luxury aesthetic. No food is visible, only high-velocity abstract motion graphics representing energy and urgency." src="https://lh3.googleusercontent.com/aida/ADBb0uhj6A051kgAXyEcbu731WjwcfFsf1EzyHWIKj0HU5NC0SS4ErZHKnuGndhvCFTHc-ieWuaKDaBwF_5_8hhoz92bOusrhX_iZYkSu8jZVLCUOcBcknyD214W0vh-ike1c-h50AFJzrEw76g_4oRhbW3scQ9j7ucywWgdzs9U3x6hSLXj318tw6hstLdYe58QN9oYoNrdF9vygQHVwM4pK_zV27Smx-EdUui6N8L5Nk47uDS8FKcK1QW2iA5K"/>
+<div class="absolute inset-0 bg-primary/20 backdrop-blur-[2px]"></div>
+<div class="relative z-10 px-xl max-w-2xl">
+<span class="inline-block bg-white text-primary font-label-bold px-3 py-1 rounded-full text-xs mb-4">LIMITED TIME</span>
+<h2 class="text-white font-display-lg text-4xl mb-4">Weekend Specials</h2>
+<p class="text-white/90 font-body-lg mb-8">Unlock exclusive offers and secret menus at top restaurants this Saturday and Sunday.</p>
+<button class="bg-white text-primary hover:bg-zinc-100 px-8 py-3 rounded-xl font-label-bold transition-all shadow-xl active:scale-95">Claim Now</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 px-6 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 font-['Plus_Jakarta_Sans'] text-sm">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl mx-auto">
+<div class="space-y-4">
+<h4 class="text-xl font-bold text-zinc-900 dark:text-zinc-50">GourmetGo</h4>
+<p class="text-zinc-500 dark:text-zinc-400">Discovering the soul of your city through its flavors.</p>
+</div>
+<div>
+<h5 class="text-red-600 dark:text-red-500 font-bold mb-4">Quick Links</h5>
+<ul class="space-y-2">
+<li><a class="text-zinc-500 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-400 underline underline-offset-4 cursor-pointer" href="#">About Us</a></li>
+<li><a class="text-zinc-500 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-400 underline underline-offset-4 cursor-pointer" href="#">Careers</a></li>
+<li><a class="text-zinc-500 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-400 underline underline-offset-4 cursor-pointer" href="#">Partner with Us</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-red-600 dark:text-red-500 font-bold mb-4">Support</h5>
+<ul class="space-y-2">
+<li><a class="text-zinc-500 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-400 underline underline-offset-4 cursor-pointer" href="#">Contact</a></li>
+<li><a class="text-zinc-500 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-400 underline underline-offset-4 cursor-pointer" href="#">Terms of Service</a></li>
+<li><a class="text-zinc-500 dark:text-zinc-400 hover:text-red-600 dark:hover:text-red-400 underline underline-offset-4 cursor-pointer" href="#">Privacy Policy</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-red-600 dark:text-red-500 font-bold mb-4">Newsletter</h5>
+<div class="flex gap-2">
+<input class="bg-white dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 rounded-lg text-sm w-full focus:ring-primary focus:border-primary" placeholder="Email" type="email"/>
+<button class="bg-primary text-white px-4 py-2 rounded-lg font-bold">Join</button>
+</div>
+</div>
+</div>
+<div class="max-w-7xl mx-auto mt-12 pt-8 border-t border-zinc-200 dark:border-zinc-800 text-center text-zinc-500 dark:text-zinc-400">
+            © 2024 GourmetGo. All rights reserved.
+        </div>
+</footer>
+</body></html>

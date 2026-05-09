@@ -362,6 +362,112 @@ For demos and coursework, the free tiers are sufficient. For a graded review, hi
 
 
 
+Phase 11 — Production Deployment: Render (Backend) + Vercel (Frontend)
+This phase covers deploying the current project structure to free-tier cloud platforms. The backend (FastAPI) runs on Render and the Next.js frontend runs on Vercel. All provider secrets stay server-side on Render; the browser only talks to the Render HTTPS URL.
+
+Current project layout
+Path	Role
+backend/src/milestone0/app/main.py	FastAPI app entry point (uvicorn target)
+backend/src/	Python source root (all milestones)
+backend/pyproject.toml	Python dependency manifest
+next-frontend/	Next.js 14 app (deployed to Vercel)
+next-frontend/src/app/page.js	Reads NEXT_PUBLIC_API_URL for all backend calls
+streamlit_app.py	Streamlit entry point (deployed to Streamlit Cloud separately)
+
+Step 1 — Prepare the repo
+1.1 Add render.yaml at the repo root
+services:
+  - type: web
+    name: nextleap-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -e .
+    startCommand: uvicorn milestone0.app.main:app --app-dir src --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: HF_TOKEN
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+
+1.2 Add next-frontend/vercel.json
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npm install",
+  "framework": "nextjs"
+}
+
+1.3 Wire the API URL in next-frontend/src/app/page.js
+Replace every hardcoded http://127.0.0.1:8000 with:
+const API = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+This lets Vercel inject the live Render URL at build time while localhost still works in development.
+
+Step 2 — Deploy the backend on Render
+1. Push repo to GitHub.
+2. Render dashboard → New → Blueprint → connect repo → Render reads render.yaml automatically.
+3. Set environment variables in the Render dashboard:
+Var	Required	Value
+GEMINI_API_KEY	Yes	From https://aistudio.google.com/app/apikey
+HF_TOKEN	Optional	Raises Hugging Face rate limits
+CORS_ORIGINS	Yes (after step 3)	https://<your-project>.vercel.app
+
+4. After first deploy, verify:
+GET https://<service>.onrender.com/health → {"status":"ok","dataset_loaded":true}
+GET https://<service>.onrender.com/api/locations → JSON array of neighbourhoods
+POST https://<service>.onrender.com/api/recommend → ranked recommendations
+
+Note: Free tier sleeps after 15 min of inactivity (30–60 s cold start). Use UptimeRobot to ping /health every 10 min to keep it warm, or upgrade to Render's $7/month paid tier.
+
+Step 3 — Deploy the frontend on Vercel
+1. Vercel dashboard → Add New Project → import the same GitHub repo.
+2. Set Root Directory to next-frontend.
+3. Framework preset: Next.js (auto-detected).
+4. Add environment variable:
+Var	Value
+NEXT_PUBLIC_API_URL	https://<your-render-service>.onrender.com
+
+5. Deploy. After build completes, verify:
+https://<project>.vercel.app loads the biteAI UI.
+Submitting the form calls the Render backend and returns recommendations.
+
+Step 4 — Wire CORS
+Once the Vercel URL is known, set CORS_ORIGINS on Render to the exact origin:
+CORS_ORIGINS=https://<project>.vercel.app
+
+In backend/src/milestone0/app/main.py update allow_origins to read from this env var:
+import os
+origins = os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
+app.add_middleware(CORSMiddleware, allow_origins=origins, ...)
+
+Save → Render restarts automatically → re-test from the Vercel URL.
+
+Step 5 — Smoke-test checklist
+1. Page loads, navbar, hero and feature cards render with no console errors.
+2. Location dropdown populates from /api/locations.
+3. Submit valid preferences → AI-ranked restaurant cards appear with rating, cuisine, price, reasoning.
+4. Submit impossible filters (rating 5.0, obscure location) → "No restaurants matched" empty state.
+5. Check Render logs → 200 lines appear for each request with latency.
+
+Troubleshooting
+Symptom	Fix
+CORS error in browser	CORS_ORIGINS on Render doesn't match Vercel origin exactly. No trailing slash.
+Failed to fetch	NEXT_PUBLIC_API_URL missing or wrong. Update in Vercel env vars and redeploy.
+dataset_loaded: false	Cold start still in progress. Wait 60 s and retry /health.
+Gemini returns empty recommendations	GEMINI_API_KEY not set or invalid on Render. Re-paste and redeploy.
+Vercel build fails	Check next-frontend/ for TypeScript or ESLint errors locally first.
+
+Cost on free tiers
+Resource	Free allowance	Notes
+Render web service	750 hrs/month	Sleeps when idle
+Vercel hobby plan	100 GB bandwidth, 6 000 build-minutes	Static + SSR, essentially free at demo scale
+Gemini API	Free dev quota	Keep candidate_cap ≤ 25
+Hugging Face Hub	Anonymous access	Set HF_TOKEN if rate-limited
+
 Phase 9 — Hardening and handoff (optional but recommended)
 Automated tests for filters, prompt shape, JSON parsing (fixtures with fake LLM responses), and API contract tests (golden JSON for happy/empty/error paths).
 README: install, set GEMINI_API_KEY, run API + UI, CLI fallbacks, and limitations (dataset revision, rate limits, candidate cap).

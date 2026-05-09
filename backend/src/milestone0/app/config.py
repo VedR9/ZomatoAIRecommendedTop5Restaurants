@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
     llm_api_key: str | None = None
     gemini_api_key: str | None = None
+    cors_origins: str = "http://localhost:3000,http://127.0.0.1:3000"
 
 
 @lru_cache(maxsize=1)

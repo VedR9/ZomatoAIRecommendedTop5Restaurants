@@ -5,7 +5,7 @@ from google.genai import types, errors as genai_errors
 from milestone1.ingestion.models import Restaurant
 from milestone3.retrieval.models import RetrievalPreferences
 from milestone4.recommendation.client import get_client
-from milestone4.recommendation.models import RecommendationResult
+from milestone4.recommendation.models import Recommendation, RecommendationResult, _LLMResult
 from milestone4.recommendation.prompt import SYSTEM_PROMPT, build_user_prompt
 
 logger = logging.getLogger(__name__)
@@ -18,20 +18,40 @@ _MODEL_FALLBACK_CHAIN = [
     "gemini-flash-latest",
 ]
 
-def _call_model(client, model_name: str, user_prompt: str) -> RecommendationResult:
+
+def _enrich(llm_result: _LLMResult, candidates: list[Restaurant]) -> RecommendationResult:
+    lookup = {r.id: r for r in candidates}
+    enriched = []
+    for rec in llm_result.recommendations:
+        restaurant = lookup.get(rec.restaurant_id)
+        enriched.append(Recommendation(
+            restaurant_id=rec.restaurant_id,
+            restaurant_name=rec.restaurant_name,
+            reasoning=rec.reasoning,
+            rank=rec.rank,
+            rating=restaurant.rating if restaurant else None,
+            cuisines=restaurant.cuisines if restaurant else None,
+            location=restaurant.location if restaurant else None,
+            cost_for_two=restaurant.cost_for_two if restaurant else None,
+        ))
+    return RecommendationResult(recommendations=enriched)
+
+
+def _call_model(client, model_name: str, user_prompt: str, candidates: list[Restaurant]) -> RecommendationResult:
     response = client.models.generate_content(
         model=model_name,
         contents=user_prompt,
         config=types.GenerateContentConfig(
             system_instruction=SYSTEM_PROMPT,
             response_mime_type="application/json",
-            response_schema=RecommendationResult,
+            response_schema=_LLMResult,
             temperature=0.2,
         ),
     )
     if response.text:
         data = json.loads(response.text)
-        return RecommendationResult.model_validate(data)
+        llm_result = _LLMResult.model_validate(data)
+        return _enrich(llm_result, candidates)
     return RecommendationResult(recommendations=[])
 
 
@@ -54,7 +74,7 @@ def generate_recommendations(
         logger.info(f"Calling LLM '{model}' with {len(candidates)} candidates...")
         start_time = time.time()
         try:
-            result = _call_model(client, model, user_prompt)
+            result = _call_model(client, model, user_prompt, candidates)
             latency = (time.time() - start_time) * 1000
             logger.info(f"LLM '{model}' succeeded in {latency:.2f}ms.")
             return result
