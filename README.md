@@ -1,5 +1,5 @@
 # 🍽️ ZomatoAI — AI-Powered Restaurant Recommendations
-
+(Hosted on a free server - please give it one minute to load for the first time)
 **Live App → [https://z-omato-ai-recommended-top5-restaur.vercel.app](https://z-omato-ai-recommended-top5-restaur.vercel.app)**
 
 Discover your next favorite meal, personalized for your taste, mood and cravings — powered by Google Gemini AI.
