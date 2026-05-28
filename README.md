@@ -13,6 +13,13 @@ Discover your next favorite meal, personalized for your taste, mood and cravings
 - **Google Gemini** ranks and explains why each restaurant fits your preferences
 - Results show rating, cuisine tags, price for two, and AI reasoning
 
+
+
+https://github.com/user-attachments/assets/206cff7e-df45-496b-b390-5066e5b66696
+
+
+
+
 ---
 
 ## Tech Stack
