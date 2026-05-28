@@ -14,7 +14,7 @@ Discover your next favorite meal, personalized for your taste, mood and cravings
 - Results show rating, cuisine tags, price for two, and AI reasoning
 
 
-https://github.com/user-attachments/assets/4fd1acd0-e785-4c13-a3fa-8f10b7ed86d7
+https://github.com/user-attachments/assets/2dfa3479-7c4f-4b41-b403-3340694146c1
 
 
 ---
